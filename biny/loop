@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+while true;do
+  clear
+  $1|sed -E 's|\s*\[error opening dir\]||g'|sed -E 's| ->.*||g'
+  sleep "$2"
+done

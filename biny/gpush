@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+server=$1
+user=$2
+repo=$3
+prefix=
+
+if test -z "$user";then exit 1;fi
+if test -z "$repo";then exit 1;fi
+
+if [ "$server" == "gitlab" ];then
+  prefix='gitlab-cli-token:'
+fi
+
+tfile="/iasj/cryp/$server"
+token="${tfile}.gpg"
+if test -f "$tfile";then rm $tfile;fi
+
+if test -f "$token";then
+  gpg "$token"
+  if test -f "$tfile";then 
+    token=$(cat $tfile)
+    rm $tfile
+    url="https://${prefix}${token}@${server}.com/${user}/${repo}"
+    flag="--force ${url} main --tags"
+    git push $flag
+  fi
+fi

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+
+if test -z "$1";then
+  echo -n "Enter file path to be encrypted [~/.bashrc]: "
+  read -e inpt 
+else
+  inpt=$1
+fi
+if test -z "$inpt";then inpt=~/.bashrc;fi
+  gpg -c $inpt
+  exit 0
+
+echo -n "Enter password [passwd]:"
+read -s pass
+
+if test -z "$pass";then pass=passwd;fi
+
+echo
+
+if test -f $inpt;then
+  outp=$inpt.gpg
+  gpg -c $inpt
+  echo "Your encrypted file is: $outp"
+else
+  echo "File $inpt not found. Aborting..."
+fi
